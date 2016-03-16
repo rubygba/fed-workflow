@@ -72,9 +72,6 @@ gulp.task('release', function() {
     gulp.src(paths.font)
         .pipe(gulp.dest(dist+"/css/fonts"));
 
-    gulp.src("./templates/*.html")
-        .pipe(gulp.dest(dist + "/templates"));
-
     gulp.src(paths.images)
         .pipe(imagemin({
             progressive: true,

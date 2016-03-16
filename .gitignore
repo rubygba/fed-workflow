@@ -1,3 +1,4 @@
 test/node_modules
 src/node_modules
 src/bower_modules
+src/.sass-cache
