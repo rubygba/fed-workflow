@@ -7,30 +7,39 @@ var pngquant = require('imagemin-pngquant');
 var gulpif = require('gulp-if');
 var uglify = require('gulp-uglify');
 var useref = require('gulp-useref');
+var sass = require('gulp-sass');
+var stylus = require('gulp-stylus');
+var clean = require('gulp-clean');
 
 var paths = {
     html: [
-        "./*.html",
+        "*.html",
+    ],
+    html_modules: [
+        "html_modules/**/*.html",
     ],
     images: [
-        "./images/*"
+        "images/*",
     ],
     js: [
-        "./js/**/*",
+        "js/**/*.js",
     ],
     sass: [
-        "/sass/*.scss",
+        "sass/**/*.scss",
+    ],
+    stylus: [
+        "styl/**/*.styl",
     ],
     font: [
-        "./fonts/*.ttf"
+        "fonts/*.ttf"
     ]
 };
 
-var output = "../dist";
-var dist = "../test/public";
+var output = "../.temp"; // 文件构建输出地址
+var dist = "../dist"; // dist目录
 
 /**
- *  Task 
+ *  Task
  */
 gulp.task('images', function() {
     gulp.src(paths.images)
@@ -53,20 +62,35 @@ gulp.task('font', function() {
         .pipe(gulp.dest(output + "/css/fonts"));
 });
 
-gulp.task('css', function() {
-    exec("sass --watch ./sass:"+output+"/css", function(err, stdout, stderr) {
-        if (err) console.log("gulp.sass error:" + err);
-    });
+gulp.task('sass', function() {
+    gulp.src(paths.sass)
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest(output + '/css'));
 });
 
-// =============压缩合并dist资源到test============== //
-gulp.task('release', function() {
+gulp.task('stylus', function() {
+    gulp.src(paths.stylus)
+        .pipe(stylus())
+        .on('error', function(err) {
+            console.log('Stylus Error!', err.message);
+            this.end();
+        })
+        .pipe(gulp.dest(output + '/css'));
+
+});
+
+// =============压缩合并build资源============== //
+gulp.task('dist', ['run.dist'], function() {
+
+    gulp.src(dist + "/*")
+        .pipe(clean({force: true}));
+
     gulp.src(output+"/*.html")
-        .pipe(useref())
         .pipe(gulpif('*.css', minifyCss()))
         .pipe(gulpif('*.js', uglify({
             mangle: false
         })))
+        .pipe(useref())
         .pipe(gulp.dest(dist));
 
     gulp.src(paths.font)
@@ -81,15 +105,26 @@ gulp.task('release', function() {
         .pipe(gulp.dest(dist+"/images"));
 });
 
-// =============拷贝dist资源到test============== //
-gulp.task('test', function() {
-    gulp.src("../dist/**/*")
-    .pipe(gulp.dest("../test/public"));
+gulp.task('run.dist', function() {
+    exec("node ../app.js /dist", function(err, stdout, stderr) {
+        console.log(stdout);
+        if (err) console.log("start server error:" + err);
+    });
+});
+
+gulp.task('run.build', function() {
+    exec("node ../app.js /.temp", function(err, stdout, stderr) {
+        console.log(stdout);
+        if (err) console.log("start server error:" + err);
+    });
 });
 
 // 默认构建
-gulp.task('default', ['images', 'css', 'html', 'js', 'font', 'test'], function() {
-    gulp.watch(['sass/**/*.scss'], ['css']);
+gulp.task('default', ['images', 'sass', 'stylus', 'html', 'js', 'font', 'run.build'], function() {
+    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.stylus, ['stylus'])
     gulp.watch(paths.html, ['html']);
-    gulp.watch(['js/**/*.js'], ['js']);
+    gulp.watch(paths.html_modules, ['html']);
+    gulp.watch(paths.images, ['images']);
+    gulp.watch(paths.js, ['js']);
 });
