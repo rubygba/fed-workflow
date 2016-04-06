@@ -76,7 +76,6 @@ gulp.task('stylus', function() {
             this.end();
         })
         .pipe(gulp.dest(output + '/css'));
-
 });
 
 // =============压缩合并build资源============== //
@@ -93,6 +92,19 @@ gulp.task('dist', ['run.dist'], function() {
         .pipe(useref())
         .pipe(gulp.dest(dist));
 
+    gulp.src('styl/**/*.mini.styl')
+        .pipe(stylus())
+        .on('error', function(err) {
+            console.log('Stylus Error!', err.message);
+            this.end();
+        })
+        .pipe(minifyCss())
+        .pipe(gulp.dest(dist + '/css'));
+
+//    gulp.src(dist + '/temp/*.css')
+//        .pipe(minifyCss())
+//        .pipe(gulp.dest(dist + '/css'));
+
     gulp.src(paths.font)
         .pipe(gulp.dest(dist+"/css/fonts"));
 
@@ -103,6 +115,7 @@ gulp.task('dist', ['run.dist'], function() {
             use: [pngquant()]
         }))
         .pipe(gulp.dest(dist+"/images"));
+
 });
 
 gulp.task('run.dist', function() {
