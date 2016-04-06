@@ -1,6 +1,6 @@
-# Front End Workflow.
+#Front End Workflow.
 
-#
+#目录
 
 ```bash
 | - fed-workflow
@@ -20,10 +20,10 @@
 | - README.md 项目说明文件
 
 ```
-# Init
+#安装
 
 * 根目录
-* 运行`npm install` 安装node.js服务器依赖
+* 运行`npm install` 安装node.js本地测试服务器依赖
 * 切换到src目录
 * 运行`npm install` 安装gulp插件
 * 运行`bower install` 初始化前端依赖库
@@ -31,4 +31,4 @@
 #运行
 
 * 在`src`目录下运行`gulp`命令，自动构建到`.temp` 目录
-* 运行`gulp server` 可将build目录拷贝到public下，通过本地ip或者域名访问
+* 运行`gulp dist` 发布整合压缩后的代码，打包发布或通过本地ip访问
