@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 window.onload = function () {
     var data = {
         message: 'Hello Vue.js!'
@@ -86,4 +87,13 @@ $(function() {
         }
     }
     setContentBodyPadding();
+=======
+var data = {
+    message: 'Hello Vue.js!'
+}
+
+var demo = new Vue({
+    el: '#demo',
+    data: data
+>>>>>>> origin/master
 })
