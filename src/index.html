@@ -1,16 +1,83 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>首页</title>
-		<!-- build:css css/exchange.css -->
-		<link rel="stylesheet" type="text/css" href="css/common.css">
-		<!-- endbuild -->
-		<!-- build:js js/jquery.js -->
-		<script type="text/javascript" src="js/main.js"></script>
-		<!-- endbuild -->
-	</head>
-	<body>
-		@@include('./html_modules/header.html')
-		@@include('./html_modules/footer.html')
-	</body>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+	<title>首页</title>
+	<!-- build:css css/exchange.css -->
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<!-- endbuild -->
+	<!-- build:js js/jquery.js -->
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<!-- endbuild -->
+</head>
+<body>
+	@@include('./html/modules/header.html')
+
+	<div id="demo">
+  	<p>{{message.split('').reverse().join('')}}</p>
+  	<input v-model="message">
+	</div>
+
+	<div class="calendar">
+
+		<div class="calendar-new txt-center">
+			<div class="calendar-head clearfix">
+				<div class="calendar-head-select"><a href="#">2016年3月<span class=""></span></a></div>
+				<div class="calendar-head-today"><a href="#">今天</a></div>
+			</div>
+			<div class="calendar-body clearfix">
+				<div class="calendar-body-hd clearfix">
+					<ul>
+						<li>星期日</li>
+						<li>星期一</li>
+						<li>星期二</li>
+						<li>星期三</li>
+						<li>星期四</li>
+						<li>星期五</li>
+						<li>星期六</li>
+					</ul>
+				</div>
+				<div class="li-day li-day-sun">
+					<b></b>
+					<p>31</p>
+					<span>元宵节</span>
+				</div>
+				<div class="li-day">
+					<b></b>
+					<p>30</p>
+					<span>十四</span>
+				</div>
+				<div class="li-day">
+					<b></b>
+					<p>29</p>
+					<span>十三</span>
+				</div>
+				<div class="li-day">
+					<b></b>
+					<p>28</p>
+					<span>十二</span>
+				</div>
+				<div class="li-day">
+					<b class="icon-check"></b>
+					<p>27</p>
+					<span>十一</span>
+				</div>
+				<div class="li-day">
+					<b></b>
+					<p>26</p>
+					<span>十</span>
+				</div>
+				<div class="li-day li-day-sat">
+					<b></b>
+					<p>25</p>
+					<span>初九</span>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	@@include('./html/modules/footer.html')
+</body>
 </html>

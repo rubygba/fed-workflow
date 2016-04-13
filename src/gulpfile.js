@@ -16,7 +16,7 @@ var paths = {
         "*.html",
     ],
     html_modules: [
-        "html_modules/**/*.html",
+        "html/**/*.html",
     ],
     images: [
         "images/*",
@@ -76,7 +76,6 @@ gulp.task('stylus', function() {
             this.end();
         })
         .pipe(gulp.dest(output + '/css'));
-
 });
 
 // =============压缩合并build资源============== //
@@ -93,6 +92,19 @@ gulp.task('dist', ['run.dist'], function() {
         .pipe(useref())
         .pipe(gulp.dest(dist));
 
+    gulp.src('styl/**/*.mini.styl')
+        .pipe(stylus())
+        .on('error', function(err) {
+            console.log('Stylus Error!', err.message);
+            this.end();
+        })
+        .pipe(minifyCss())
+        .pipe(gulp.dest(dist + '/css'));
+
+//    gulp.src(dist + '/temp/*.css')
+//        .pipe(minifyCss())
+//        .pipe(gulp.dest(dist + '/css'));
+
     gulp.src(paths.font)
         .pipe(gulp.dest(dist+"/css/fonts"));
 
@@ -103,6 +115,7 @@ gulp.task('dist', ['run.dist'], function() {
             use: [pngquant()]
         }))
         .pipe(gulp.dest(dist+"/images"));
+
 });
 
 gulp.task('run.dist', function() {
@@ -122,7 +135,7 @@ gulp.task('run.build', function() {
 // 默认构建
 gulp.task('default', ['images', 'sass', 'stylus', 'html', 'js', 'font', 'run.build'], function() {
     gulp.watch(paths.sass, ['sass']);
-    gulp.watch(paths.stylus, ['stylus'])
+    gulp.watch(paths.stylus, ['stylus']);
     gulp.watch(paths.html, ['html']);
     gulp.watch(paths.html_modules, ['html']);
     gulp.watch(paths.images, ['images']);

@@ -5,8 +5,11 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var Http = require('./HttpRequestUtils');
 
-app.use(express.static('./public'));
-// app.use(express.static('../dist/www'));
+var dir = (process.argv)[2] || '/.temp';
+console.log("process>>" + (process.argv)[2]);
+// 静态文件目录
+console.log("dirname>>" + __dirname + dir);
+app.use(express.static(__dirname + dir));
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({
@@ -36,22 +39,13 @@ app.post("/api/:name", function(req, res) {
    doResponse(req, res);
 });
 
-app.post("/public/interface/login/interfaceLogin.action", function(req, res) {
-    return res.json({
-        code: "200",
-        sessionid: "12345gaege232",
-        success: true,
-        messages: "OK"
-    });
-});
-
 /**
  * Proxy GET Request
  * @param  {[type]} req  [description]
  * @param  {[type]} res) {               var options [description]
  * @return {[type]}      [description]
  */
-app.get("/api/*", function(req, res) {
+app.get("/remote/*", function(req, res) {
     var options = getOptions(req.originalUrl);
     Http.get(options).then(function(data) {
         return res.send(data);
@@ -64,7 +58,7 @@ app.get("/api/*", function(req, res) {
  * @param  {[type]} res) {               var body [description]
  * @return {[type]}      [description]
  */
-app.post("/api/*", function(req, res) {
+app.post("/remote/*", function(req, res) {
     var body = req.body || undefined;
     var options = getOptions(req.originalUrl);
     if (body.length > 0) options = getOptions(req.originalUrl, body);

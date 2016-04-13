@@ -1,4 +1,6 @@
-test/node_modules
-src/node_modules
-src/bower_modules
-src/.sass-cache
+node_modules/*
+/.temp/*
+/dist/*
+/src/*
+!/src/styl/*strap.styl
+!/src/sass/*strap.scss
